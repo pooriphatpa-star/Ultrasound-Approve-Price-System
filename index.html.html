@@ -1,0 +1,2213 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ultrasound Approve Price System | SPCS</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f1f5f9;
+  color: #1e293b;
+}
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+header {
+  background: #fff;
+  padding: 15px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+.logo { color: #1261bb; font-size: 21px; font-weight: bold; }
+.layout { display: flex; min-height: calc(100vh - 60px); }
+aside {
+  width: 220px;
+  background: #102e58;
+  color: white;
+  padding: 20px 12px;
+}
+aside h3 { padding-left: 12px; }
+aside button {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  margin: 5px 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: white;
+  text-align: left;
+}
+aside button:hover, aside button.active { background: #1765bd; }
+main { flex: 1; padding: 25px; min-width: 0; }
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px #0000000a;
+}
+h1 { font-size: 24px; margin: 0 0 8px; }
+h2 { font-size: 19px; margin-top: 0; }
+p { color: #64748b; }
+.primary {
+  background: #1261d5;
+  color: white;
+  border: 0;
+  border-radius: 6px;
+  padding: 11px 20px;
+}
+.primary:hover { background: #084cae; }
+.secondary {
+  background: white;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 10px 18px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 15px;
+}
+.product {
+  border: 1px solid #dbe3ed;
+  border-radius: 8px;
+  padding: 15px;
+  background: white;
+  cursor: pointer;
+}
+.product:hover { border-color: #1261d5; }
+.product.selected {
+  border: 2px solid #1261d5;
+  background: #eff6ff;
+}
+.product strong { display: block; margin: 10px 0; }
+.price { color: #1261d5; font-weight: bold; }
+.product input { margin-right: 6px; }
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.step {
+  flex: 1;
+  min-width: 85px;
+  text-align: center;
+  padding: 12px 5px;
+  border-bottom: 3px solid #cbd5e1;
+  color: #64748b;
+  font-size: 13px;
+}
+.step.active { border-color: #1261d5; color: #1261d5; font-weight: bold; }
+.step.done { border-color: #16a34a; color: #16a34a; }
+input[type="text"], input[type="password"], select, textarea {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  margin: 7px 0 15px;
+}
+label { font-size: 14px; font-weight: bold; }
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 22px;
+  gap: 10px;
+}
+table { width: 100%; border-collapse: collapse; }
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 14px;
+}
+th { background: #eff6ff; }
+.total {
+  text-align: right;
+  font-size: 21px;
+  font-weight: bold;
+  color: #1261d5;
+  padding: 18px 0;
+}
+.hidden { display: none !important; }
+.login h1 { text-align: center; color: #1261bb; }
+
+#app { display: none; }
+@media(max-width:650px) {
+  .layout { display: block; }
+  aside { width: 100%; padding: 8px; display: flex; flex-wrap: wrap; }
+  aside h3 { display: none; }
+  aside button { width: auto; flex: 1; font-size: 12px; padding: 10px 5px; }
+  main { padding: 12px; }
+  header { padding: 12px; }
+  .step { font-size: 11px; }
+}
+ /* พื้นหลังหน้า Login */
+body {
+    margin: 0;
+    min-height: 100vh;
+    background-image: url("./images/background6.jpg");
+    background-size: 70% auto;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+/* พื้นหลังเฉพาะหน้า Login */
+body:not(.app-page) {
+    background-image: url("./images/background6.jpg");
+    background-size: 70% auto;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* หน้าใช้งานระบบทั้งหมด */
+body.app-page {
+    background-image: none !important;
+    background-color: #f5f6fa !important;
+}
+
+/* จัดตำแหน่ง Login ด้านขวา */
+
+#loginPage.login {
+    position: fixed;
+    top: 50%;
+    right: 30ch;
+    transform: translateY(-50%);
+    width: 390px;
+    padding: 30px;
+    margin: 0;
+    box-sizing: border-box;
+
+    background: rgba(255, 255, 255, 0.90);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+/* เอารูปพื้นหลังออกจากหน้า Home */
+body.dashboard-page {
+    background-image: none !important;
+    background-color: #f5f6fa !important;
+}
+/* ปิดรูปพื้นหลังทุกหน้าหลัง Login */
+body.app-page {
+    background-image: none !important;
+    background-color: #f5f6fa !important;
+}
+#history .card {
+  margin-top: 0;
+  padding-top: 10px;
+}
+
+#history {
+  margin-top: 0;
+  padding-top: 0;
+}
+/* MANAGEMENT PAGE */
+.grid-management {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.grid-management .card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.grid-management .card h3 {
+  margin-top: 0;
+  color: #1e293b;
+}
+
+.grid-management .card p {
+  color: #64748b;
+  min-height: 40px;
+}
+
+@media (max-width: 700px) {
+  .grid-management {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginPage" class="login">
+  <h1>LOGIN</h1>
+  <p style="text-align:center">Ultrasound Approve Price System</p>
+  <hr>
+  <label>Username</label>
+  <input type="text" id="username" placeholder="ชื่อผู้ใช้งาน">
+  <label>Password</label>
+  <input type="password" id="password" placeholder="รหัสผ่าน">
+  <button class="primary" style="width:100%" onclick="login()">เข้าสู่ระบบ
+  </button>
+  <p style="font-size:12px;text-align:center">
+    Demo: กรอกข้อมูลใดก็ได้
+  </p>
+</div>
+
+<!-- MAIN APPLICATION -->
+<div id="app">
+<header>
+  <div class="logo">CMC BIOTECH</div>
+  <div>
+    <span id="userLabel"></span>
+    <button class="secondary" onclick="logout()">ออกจากระบบ</button>
+  </div>
+</header>
+
+<div class="layout">
+<aside>
+  <h3>Ultrasound Approve Price System</h3>
+  <button onclick="showPage('home')" id="nav-home" class="active">⌂ หน้าหลัก</button>
+  <button onclick="startQuotation()" id="nav-create">▣ สร้างรายการขอราคา</button>
+  <button onclick="showPage('history')" id="nav-history">▤ รายการขอราคา</button>
+  <button onclick="showPage('customer')" id="nav-customer">♙ ลูกค้า</button>
+  <button onclick="showPage('product')" id="nav-product">▣ สินค้า</button>
+  <button onclick="showPage('management')" id="nav-management">⚙ จัดการผู้ใช้งาน</button>
+</aside>
+
+<main>
+  <!-- DASHBOARD -->
+  <section id="home">
+    <div class="card" style="background:#1261bb;color:white">
+      <h1>สร้างรายการขอราคาเครื่อง Ultrasound</h1>
+      <p style="color:#e0efff">
+        เลือกอุปกรณ์และกำหนดรายละเอียดตามความต้องการของลูกค้า
+      </p>
+      <button class="primary" style="background:white;color:#1261bb"
+        onclick="startQuotation()">+ สร้างรายการขอราคาใหม่</button>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <p>รายการทั้งหมด</p>
+        <h1 id="countAll">0</h1>
+      </div>
+      <div class="card">
+        <p>รอดำเนินการ</p>
+        <h1 id="countPending">0</h1>
+      </div>
+      <div class="card">
+        <p>ดำเนินการแล้ว</p>
+        <h1 id="countDone">0</h1>
+      </div>
+      <div class="card">
+  <p>ไม่อนุมัติ</p>
+  <h1 id="countRejected">0</h1>
+</div>
+    </div>
+    <div class="card">
+      <h2>รายการล่าสุด</h2>
+      <div id="recentList">ยังไม่มีรายการ</div>
+    </div>
+  </section>
+
+  <!-- QUOTATION WIZARD -->
+  <section id="wizard" class="hidden">
+    <div class="card">
+      <h1>สร้างรายการขอราคา (SPCS)</h1>
+      <p>เลือกอุปกรณ์ตามขั้นตอนด้านล่าง</p>
+      <div class="steps" id="steps"></div>
+    </div>
+
+    <div class="card">
+      <div id="wizardContent"></div>
+      
+<div class="actions">
+  <!-- ย้อนกลับ -->
+  <button class="secondary" onclick="previousStep()">
+    ← ย้อนกลับ
+  </button>
+
+  <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end">
+    <!-- บันทึกร่าง แสดงเฉพาะหน้า Summary -->
+    <button
+      class="secondary hidden"
+      id="draftBtn"
+      onclick="saveQuotation('Draft')">
+      Save Draft
+    </button>
+
+    <!-- ถัดไป / ส่งคำขอราคา -->
+    <button
+      class="primary"
+      id="nextBtn"
+      onclick="nextStep()">
+      ถัดไป →
+    </button>
+  </div>
+  </div>
+
+  <!-- ปิด QUOTATION WIZARD -->
+  </div>
+</section>
+
+  <!-- HISTORY -->
+  <section id="history" class="hidden">
+    <div class="card">
+      <h1>รายการขอราคา</h1>
+      <p>ตรวจสอบรายการขอราคาที่บันทึกไว้</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin:20px 0;">
+
+  <!-- ช่องค้นหา -->
+  <input
+    type="text"
+    id="historySearch"
+    placeholder="ค้นหาเลขที่รายการขอราคา หรือชื่อโรงพยาบาล..."
+    oninput="renderHistory()"
+    style="flex:1; min-width:220px; padding:11px; border:1px solid #cbd5e1; border-radius:6px;"
+  >
+
+  <!-- ตัวกรองสถานะ -->
+  <select
+    id="historyFilter"
+    onchange="renderHistory()"
+    style="width:200px; padding:11px; border:1px solid #cbd5e1; border-radius:6px;"
+  >
+    <option value="">สถานะทั้งหมด</option>
+    <option value="รออนุมัติ">รออนุมัติ</option>
+    <option value="อนุมัติแล้ว">อนุมัติแล้ว</option>
+    <option value="ไม่อนุมัติ">ไม่อนุมัติ</option>
+    <option value="Draft">Draft</option>
+  </select>
+
+</div>
+
+<div id="historyList">ยังไม่มีรายการ</div>
+    </div>
+  </section>
+   <!-- CUSTOMER MANAGEMENT -->
+<section id="customer" class="hidden">
+  <div class="card">
+    <h1>จัดการข้อมูลลูกค้า</h1>
+    <p>เพิ่ม แก้ไข และค้นหาข้อมูลโรงพยาบาลและคลินิก</p>
+
+    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px;">
+      <input
+        type="text"
+        id="customerSearch"
+        placeholder="ค้นหาชื่อลูกค้า..."
+        oninput="renderCustomerList()"
+        style="flex:1; min-width:200px; padding:10px;"
+      >
+      <button class="primary" onclick="showCustomerForm()">
+        + เพิ่มลูกค้า
+      </button>
+    </div>
+
+    <!-- CUSTOMER FORM -->
+    <div id="customerForm" class="hidden"
+         style="background:#f8fafc; padding:20px; border-radius:10px; margin-bottom:20px;">
+
+      <h3 id="customerFormTitle">เพิ่มข้อมูลลูกค้า</h3>
+
+      <label>ชื่อโรงพยาบาล / คลินิก</label>
+      <input type="text" id="customerName" placeholder="ชื่อโรงพยาบาล / คลินิก">
+
+      <label>ชื่อผู้ติดต่อ</label>
+      <input type="text" id="customerContact" placeholder="ชื่อผู้ติดต่อ">
+
+      <label>แผนก</label>
+      <input type="text" id="customerDepartment" placeholder="แผนก">
+
+      <label>เบอร์โทรศัพท์</label>
+      <input type="text" id="customerPhone" placeholder="เบอร์โทรศัพท์">
+
+      <label>อีเมล</label>
+      <input type="email" id="customerEmail"
+             style="width:100%; padding:11px; border:1px solid #cbd5e1; border-radius:6px; margin:7px 0 15px;"
+             placeholder="อีเมล">
+
+      <div style="display:flex; gap:10px;">
+        <button class="primary" onclick="saveCustomer()">
+          บันทึกข้อมูล
+        </button>
+        <button class="secondary" onclick="hideCustomerForm()">
+          ยกเลิก
+        </button>
+      </div>
+    </div>
+
+    <!-- CUSTOMER LIST -->
+    <div id="customerList">
+      ยังไม่มีข้อมูลลูกค้า
+    </div>
+
+  </div>
+</section>
+<!-- PRODUCT MANAGEMENT -->
+<section id="product" class="hidden">
+  <div class="card">
+    <h1>จัดการสินค้า</h1>
+    <p>เพิ่ม แก้ไข และค้นหาสินค้า Ultrasound</p>
+
+    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px;">
+
+      <input
+        type="text"
+        id="productSearch"
+        placeholder="ค้นหาชื่อสินค้า / รุ่น..."
+        oninput="renderProductList()"
+        style="flex:1; min-width:200px; padding:10px;"
+      >
+
+      <button class="primary" onclick="showProductForm()">
+        + เพิ่มสินค้า
+      </button>
+    </div>
+
+    <div id="productForm" class="hidden"
+         style="background:#f8fafc; padding:20px; border-radius:10px; margin-bottom:20px;">
+
+      <h3 id="productFormTitle">เพิ่มสินค้าใหม่</h3>
+
+      <label>หมวดหมู่สินค้า</label>
+      <select id="productCategory">
+        <option value="main">Main Unit</option>
+        <option value="transducer">Transducer</option>
+        <option value="options">Options</option>
+        <option value="accessory">Accessory</option>
+      </select>
+
+      <label>ชื่อยี่ห้อ / สินค้า</label>
+      <input type="text" id="productName"
+             placeholder="เช่น Canon">
+
+      <label>ชื่อรุ่น</label>
+      <input type="text" id="productModel"
+             placeholder="เช่น Aplio i700">
+
+      <label>ราคา</label>
+      <input type="number" id="productPrice"
+             placeholder="ระบุราคา">
+
+      <div style="display:flex; gap:10px; margin-top:15px;">
+        <button class="primary" onclick="saveProduct()">
+          บันทึกสินค้า
+        </button>
+
+        <button class="secondary" onclick="hideProductForm()">
+          ยกเลิก
+        </button>
+      </div>
+    </div>
+
+    <div id="productList">
+      ยังไม่มีข้อมูลสินค้า
+    </div>
+
+  </div>
+</section>
+<!-- MANAGEMENT -->
+<section id="management" class="hidden">
+  <div class="card">
+    <h1>จัดการผู้ใช้งาน</h1>
+<p>เพิ่ม แก้ไข และจัดการข้อมูลบัญชีผู้ใช้งานภายในระบบ</p>
+
+   <div class="grid-management">
+
+  <div class="card">
+    <h3>👤 ข้อมูลผู้ใช้งาน</h3>
+    <p>เพิ่ม แก้ไข ลบ และจัดการข้อมูลบัญชีผู้ใช้งานในระบบ</p>
+
+    <button class="primary" onclick="showManagementTab('sales')">
+      จัดการผู้ใช้งาน
+    </button>
+  </div>
+
+</div>
+     <!-- MANAGEMENT CONTENT -->
+    <div id="managementContent" class="hidden"
+     style="margin-top:25px; padding:20px; background:#f8fafc; border-radius:12px;">
+
+  <h2 id="managementTitle">จัดการผู้ใช้งาน</h2>
+  <p>เพิ่ม แก้ไข และจัดการข้อมูลบัญชีผู้ใช้งานในระบบ</p>
+
+  <button class="primary" onclick="showUserForm()">
+    + เพิ่มผู้ใช้งาน
+  </button>
+
+  <div id="userForm" class="hidden" style="margin-top:20px;">
+
+    <h3>ข้อมูลผู้ใช้งาน</h3>
+
+    <label>ชื่อ-นามสกุล</label>
+    <input type="text" id="userName" placeholder="กรอกชื่อ-นามสกุล">
+
+    <label>Username</label>
+    <input type="text" id="userUsername" placeholder="กำหนด Username">
+
+    <label>Password</label>
+    <input type="password" id="userPassword" placeholder="กำหนด Password">
+
+    <label>Email</label>
+    <input type="email" id="userEmail" placeholder="กรอกอีเมล">
+
+    <label>Department (แผนก)</label>
+    <input type="text" id="userDepartment" placeholder="กรอกแผนก">
+
+    <label>Position (ตำแหน่ง)</label>
+    <input type="text" id="userPosition" placeholder="กรอกตำแหน่ง">
+
+    <label>User Role (สิทธิ์การใช้งาน)</label>
+    <select id="userRole">
+      <option value="Admin">Admin</option>
+      <option value="Sales">Sales</option>
+      <option value="Approver">Approver</option>
+    </select>
+
+    <label>Status (สถานะบัญชี)</label>
+    <select id="userStatus">
+      <option value="Active">Active</option>
+      <option value="Inactive">Inactive</option>
+    </select>
+
+    <br><br>
+
+    <button class="primary" onclick="saveUser()">
+      บันทึกข้อมูล
+    </button>
+
+    <button onclick="cancelUserForm()">
+      ยกเลิก
+    </button>
+
+  </div>
+
+  <div id="userList" style="margin-top:20px;">
+    ยังไม่มีข้อมูลผู้ใช้งาน
+  </div>
+
+</div>
+
+<script>
+const steps = [
+  "Information",
+  "Main Unit",
+  "Transducer",
+  "Options",
+  "Accessory",
+  "Special Conditions",
+  "Summary"
+];
+
+const products = {
+  main: [
+  { name:"Clarius", price:0, image:"clarius.png" },
+  { name:"Canon", price:0, image:"canon.png" },
+  { name:"Konica Minolta", price:0, image:"konica.png" },
+  { name:"Wisonic", price:0, image:"wisonic.png" },
+  { name:"Vinno", price:0, image:"vinno.png" },
+  { name:"SonoScape", price:0, image:"sonoscape.png" }
+],
+  transducer: [
+    { name:"C3 HD3 Convex", price:0 },
+    { name:"L7 HD3 Linear", price:0 },
+    { name:"L15 HD3 Linear", price:0 },
+    { name:"L20 HD3 Linear", price:0 },
+    { name:"C7 HD3 Microconvex", price:0 },
+    { name:"EC7 HD3 Endocavity", price:0 },
+    { name:"PA HD3 Phased Array", price:0 },
+    { name:"PAL HD3 Phased+Linear", price:0 },
+  ],
+  options: [
+    { name:"iPad", price:30000 },
+    { name:"No iPad", price:0 },
+  ],
+  accessory: [
+    { name:"Bag Clarius", price:0 },
+    { name:"Power Fan", price:0 },
+    { name:"Gel", price:0 },
+  ]
+};
+
+// PRODUCT MANAGEMENT
+let editingProduct = null;
+let editingProductIndex = -1;
+let editingProductCategory = "";
+function saveProduct() {
+  const category = document.getElementById("productCategory").value;
+  const name = document.getElementById("productName").value.trim();
+  const model = document.getElementById("productModel").value.trim();
+  const price = Number(document.getElementById("productPrice").value) || 0;
+
+  if (!name) {
+    alert("กรุณากรอกชื่อยี่ห้อ / สินค้า");
+    return;
+  }
+
+  const isEditing = editingProductIndex !== -1;
+
+  const targetCategory = isEditing
+    ? editingProductCategory
+    : category;
+
+  const oldProduct = isEditing
+    ? products[targetCategory][editingProductIndex]
+    : null;
+
+  const newProduct = {
+    name: name,
+    model: model,
+    price: price,
+    image: oldProduct
+      ? oldProduct.image
+      : (category === "main" && name.toLowerCase() === "canon"
+          ? "canon.png"
+          : "")
+  };
+
+  if (isEditing) {
+    products[targetCategory][editingProductIndex] = newProduct;
+  } else {
+    products[category].push(newProduct);
+  }
+
+  saveProducts();
+
+  alert(isEditing
+    ? "แก้ไขสินค้าเรียบร้อยแล้ว"
+    : "เพิ่มสินค้าเรียบร้อยแล้ว"
+  );
+
+  hideProductForm();
+  renderProductList();
+}
+function saveProducts() {
+  localStorage.setItem(
+    "medEquipProducts",
+    JSON.stringify(products)
+  );
+}
+function loadProducts() {
+  const savedProducts = localStorage.getItem("medEquipProducts");
+
+  if (savedProducts) {
+    const data = JSON.parse(savedProducts);
+
+    ["main", "transducer", "options", "accessory"].forEach(category => {
+      if (Array.isArray(data[category])) {
+        products[category] = data[category];
+      }
+    });
+  }
+}
+loadProducts();
+function showProductForm() {
+  editingProduct = null;
+  editingProductIndex = -1;
+
+  document.getElementById("productFormTitle").textContent = "เพิ่มสินค้าใหม่";
+  document.getElementById("productCategory").value = "main";
+  document.getElementById("productName").value = "";
+  document.getElementById("productModel").value = "";
+  document.getElementById("productPrice").value = "";
+
+  document.getElementById("productForm").classList.remove("hidden");
+}
+
+function hideProductForm() {
+  document.getElementById("productForm").classList.add("hidden");
+}
+function renderProductList() {
+  const list = document.getElementById("productList");
+  const search = document.getElementById("productSearch").value.toLowerCase();
+
+  const categories = [
+    { key: "main", name: "Main Unit" },
+    { key: "transducer", name: "Transducer" },
+    { key: "options", name: "Options" },
+    { key: "accessory", name: "Accessory" }
+  ];
+
+  let html = "";
+
+  categories.forEach(category => {
+    const items = products[category.key];
+
+    const filtered = items
+      .map((item, index) => ({ ...item, index }))
+      .filter(item =>
+  item.name.toLowerCase().includes(search) ||
+  (item.model || "").toLowerCase().includes(search)
+);
+
+    html += `
+      <div style="margin-bottom:25px;">
+        <h3>${category.name}</h3>
+
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse;">
+            <tr style="background:#f1f5f9;">
+              <th style="padding:10px; text-align:left;">ชื่อสินค้า</th>
+              <th style="padding:10px;">ราคา</th>
+              <th style="padding:10px;">จัดการ</th>
+            </tr>
+
+            ${filtered.map(item => `
+              <tr>
+                <td style="padding:10px; border-bottom:1px solid #ddd;">
+                  <strong>${item.name}</strong>
+${item.model ? "<br><small style='color:#64748b;'>" + item.model + "</small>" : ""}
+                </td>
+
+                <td style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">
+                  ${Number(item.price || 0).toLocaleString("th-TH")} บาท
+                </td>
+
+                <td style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">
+                  <button class="secondary"
+                    onclick="editProduct('${category.key}', ${item.index})">
+                    แก้ไข
+                  </button>
+
+                  <button class="secondary"
+                    onclick="deleteProduct('${category.key}', ${item.index})">
+                    ลบ
+                  </button>
+                </td>
+              </tr>
+            `).join("")}
+          </table>
+        </div>
+      </div>
+    `;
+  });
+
+  list.innerHTML = html;
+}
+let currentStep = 0;
+let selected = {
+  main:null,
+  transducer:[],
+  options:[],
+  accessory:[],
+  quantities:{
+    transducer:{},
+    options:{},
+    accessory:{}
+  },
+
+  // Information
+  hospital:"",
+  department:"",
+  contactPerson:"",
+  position:"",
+  telephone:"",
+  email:"",
+  address:"",
+  budget:"",
+
+  // Special Conditions
+  condition:"",
+  notes:"",
+  discount:0,
+};
+let history = [];
+let editingDraftId = null;
+function loadHistory() {
+  history = JSON.parse(localStorage.getItem("quotations") || "[]");
+}
+
+loadHistory();
+
+let customers = JSON.parse(localStorage.getItem("customers") || "[]");
+let editingCustomerIndex = -1;
+// ===== USER MANAGEMENT =====
+let users = JSON.parse(localStorage.getItem("users") || "[]");
+let editingUserIndex = -1;
+// ===== SAVE USER =====
+function saveUser() {
+  const name = document.getElementById("userName").value.trim();
+  const username = document.getElementById("userUsername").value.trim();
+  const password = document.getElementById("userPassword").value;
+  const email = document.getElementById("userEmail").value.trim();
+  const department = document.getElementById("userDepartment").value.trim();
+  const position = document.getElementById("userPosition").value.trim();
+  const role = document.getElementById("userRole").value;
+  const status = document.getElementById("userStatus").value;
+
+  if (!name || !username) {
+  alert("กรุณากรอกชื่อและ Username");
+  return;
+}
+
+if (editingUserIndex === -1 && !password) {
+  alert("กรุณากำหนด Password");
+  return;
+}
+
+  const user = {
+    name,
+    username,
+    password: editingUserIndex === -1
+  ? password
+  : (password || users[editingUserIndex].password),
+    email,
+    department,
+    position,
+    role,
+    status
+  };
+
+  if (editingUserIndex === -1) {
+    if (users.some(u => u.username === username)) {
+      alert("Username นี้มีผู้ใช้งานแล้ว");
+      return;
+    }
+    users.push(user);
+  } else {
+    users[editingUserIndex] = user;
+  }
+
+  localStorage.setItem("users", JSON.stringify(users));
+renderUserList();
+cancelUserForm();
+editingUserIndex = -1;
+  alert("บันทึกข้อมูลผู้ใช้งานเรียบร้อย");
+}
+// ===== USER FORM =====
+
+function showUserForm() {
+  editingUserIndex = -1;
+
+  document.getElementById("userForm").classList.remove("hidden");
+
+  document.getElementById("userName").value = "";
+  document.getElementById("userUsername").value = "";
+  document.getElementById("userPassword").value = "";
+  document.getElementById("userEmail").value = "";
+  document.getElementById("userDepartment").value = "";
+  document.getElementById("userPosition").value = "";
+  document.getElementById("userRole").value = "Sales";
+  document.getElementById("userStatus").value = "Active";
+}
+
+function cancelUserForm() {
+  document.getElementById("userForm").classList.add("hidden");
+  editingUserIndex = -1;
+}
+
+function renderUserList() {
+  const list = document.getElementById("userList");
+
+  if (users.length === 0) {
+    list.textContent = "ยังไม่มีข้อมูลผู้ใช้งาน";
+    return;
+  }
+
+  list.innerHTML = `
+    <h3>รายชื่อผู้ใช้งาน</h3>
+    <table style="width:100%; border-collapse:collapse;">
+      <thead>
+        <tr>
+          <th>ชื่อ-นามสกุล</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+<th>จัดการ</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${users.map(user => `
+          <tr>
+            <td>${escapeUserText(user.name)}</td>
+            <td>${escapeUserText(user.username)}</td>
+            <td>${escapeUserText(user.email)}</td>
+            <td>${escapeUserText(user.role)}</td>
+            <td>${escapeUserText(user.status)}</td>
+<td>
+  <button onclick="editUser(${users.indexOf(user)})">
+  แก้ไข
+</button>
+
+<button onclick="deleteUser(${users.indexOf(user)})">
+  ลบ
+</button>
+</td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+  `;
+}
+function editUser(index) {
+  const user = users[index];
+
+  if (!user) return;
+
+  editingUserIndex = index;
+
+  document.getElementById("userForm").classList.remove("hidden");
+
+  document.getElementById("userName").value = user.name;
+  document.getElementById("userUsername").value = user.username;
+  document.getElementById("userPassword").value = "";
+  document.getElementById("userEmail").value = user.email;
+  document.getElementById("userDepartment").value = user.department;
+  document.getElementById("userPosition").value = user.position;
+  document.getElementById("userRole").value = user.role;
+  document.getElementById("userStatus").value = user.status;
+}
+function deleteUser(index) {
+  const user = users[index];
+
+  if (!user) return;
+
+  const confirmDelete = confirm(
+  "ต้องการลบผู้ใช้งาน " + user.name + " ใช่หรือไม่?"
+);
+
+  if (!confirmDelete) return;
+
+  users.splice(index, 1);
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+  renderUserList();
+
+  alert("ลบข้อมูลผู้ใช้งานเรียบร้อย");
+}
+function escapeUserText(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
+function login() {
+  const name = document.getElementById("username").value.trim();
+  const pass = document.getElementById("password").value;
+  if (!name || !pass) {
+    alert("กรุณากรอก Username และ Password");
+    return;
+  }
+  document.getElementById("userLabel").textContent = name;
+  sessionStorage.setItem("medEquipLoggedIn", "true");
+sessionStorage.setItem("medEquipUsername", name);
+  document.body.classList.add("app-page");
+  document.getElementById("loginPage").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  showPage("home");
+}
+function saveProduct() {
+  const category = document.getElementById("productCategory").value;
+  const name = document.getElementById("productName").value.trim();
+  const model = document.getElementById("productModel").value.trim();
+  const price = Number(document.getElementById("productPrice").value) || 0;
+
+  if (!name) {
+    alert("กรุณากรอกชื่อยี่ห้อ / สินค้า");
+    return;
+  }
+
+  const newProduct = {
+  name: name,
+  model: model,
+  price: price,
+  image: category === "main" && name.toLowerCase() === "canon"
+    ? "canon.png"
+    : ""
+};
+
+  products[category].push(newProduct);
+
+saveProducts();
+
+alert("เพิ่มสินค้าเรียบร้อยแล้ว");
+
+  hideProductForm();
+  renderProductList();
+}
+function logout() {
+  sessionStorage.removeItem("medEquipLoggedIn");
+sessionStorage.removeItem("medEquipUsername");
+  document.body.classList.remove("app-page");
+  document.getElementById("app").style.display = "none";
+  document.getElementById("loginPage").style.display = "block";
+  document.getElementById("password").value = "";
+}
+
+
+function showPage(page) {
+  document.body.classList.add("app-page");
+
+  ["home", "wizard", "history", "customer", "product", "management"].forEach(p => {
+    const section = document.getElementById(p);
+    if (section) {
+      section.classList.toggle("hidden", p !== page);
+    }
+  });
+
+  ["home", "create", "history", "customer", "product", "management"].forEach(p => {
+    const nav = document.getElementById("nav-" + p);
+    if (nav) {
+      nav.classList.toggle(
+        "active",
+        (page === "wizard" ? p === "create" : p === page)
+      );
+    }
+  });
+
+  if (page === "history") renderHistory();
+  if (page === "home") updateDashboard();
+  if (page === "customer") renderCustomerList();
+  if (page === "product") renderProductList();
+}
+
+function startQuotation() {
+  selected = {
+    main: null,
+    transducer: [],
+    options: [],
+    accessory: [],
+    quantities: {
+      transducer: {},
+      options: {},
+      accessory: {}
+    },
+    hospital: "",
+    condition: "",
+    notes: "",
+    discount: 0,
+    vat: 7
+  };
+
+  currentStep = 0;
+  showPage("wizard");
+  renderStep();
+}
+function renderStep() {
+  document.getElementById("steps").innerHTML = steps.map((s,i)=>
+    `<div class="step ${i===currentStep?"active":i<currentStep?"done":""}">
+      ${i+1}. ${s}
+    </div>`
+  ).join("");
+
+  const content=document.getElementById("wizardContent");
+  const titles=[
+  "กรอกข้อมูลลูกค้า (Information)",
+  "เลือก Main Unit (เครื่องหลัก)",
+  "เลือก Transducer (หัวตรวจ)",
+  "เลือก Options สำหรับ Main Unit",
+  "เลือก Accessory (อุปกรณ์เสริม)",
+  "เลือกเงื่อนไขพิเศษ (Special Conditions)",
+  "สรุปใบขอราคา (Summary)"
+];
+
+  let html=`<h2>${titles[currentStep]}</h2>`;
+
+if(currentStep===0) {
+  html+=`
+    <h3>Customer / Organization Information</h3>
+
+    <label>Hospital / Organization / Clinic *</label>
+    <input type="text"
+      placeholder="ชื่อโรงพยาบาล / หน่วยงาน / คลินิก"
+      value="${escapeHTML(selected.hospital)}"
+      oninput="selected.hospital=this.value">
+
+    <label>Department</label>
+    <input type="text"
+      placeholder="แผนก / หน่วยงาน"
+      value="${escapeHTML(selected.department)}"
+      oninput="selected.department=this.value">
+
+    <label>Contact Person</label>
+    <input type="text"
+      placeholder="ชื่อผู้ติดต่อ"
+      value="${escapeHTML(selected.contactPerson)}"
+      oninput="selected.contactPerson=this.value">
+
+    <label>Position</label>
+    <input type="text"
+      placeholder="ตำแหน่งผู้ติดต่อ"
+      value="${escapeHTML(selected.position)}"
+      oninput="selected.position=this.value">
+
+    <label>Telephone Number</label>
+    <input type="tel"
+      placeholder="เบอร์โทรศัพท์"
+      value="${escapeHTML(selected.telephone)}"
+      oninput="selected.telephone=this.value">
+
+    <label>Email Address</label>
+    <input type="email"
+      placeholder="อีเมล"
+      value="${escapeHTML(selected.email)}"
+      oninput="selected.email=this.value">
+
+    <label>Address</label>
+    <textarea rows="3"
+      placeholder="ที่อยู่โรงพยาบาล / หน่วยงาน"
+      oninput="selected.address=this.value">${escapeHTML(selected.address)}</textarea>
+
+    <label>Budget</label>
+    <input type="text"
+      placeholder="งบประมาณโดยประมาณ"
+      value="${escapeHTML(selected.budget)}"
+      oninput="selected.budget=this.value">
+  `;
+}
+if(currentStep===1) {
+  html+=`<p>เลือกยี่ห้อและรุ่นเครื่อง Ultrasound ที่ต้องการ</p>
+    <div class="grid">${products.main.map((p,i)=>`
+      <div class="product ${selected.main===i?"selected":""}"
+        onclick="selectMain(${i})">
+        <div style="text-align:center">
+          <img src="./images/${p.image}" alt="${p.name}"
+            style="width:100%;height:140px;object-fit:contain;">
+        </div>
+        <strong>${p.name}</strong>
+      </div>`).join("")}</div>`;
+}
+  if(currentStep===2) {
+  html+=`<p>เลือกหัวตรวจที่ต้องการ</p>
+    <div class="grid">${products.transducer.map((p,i)=>`
+      <div class="product ${selected.transducer.includes(i)?"selected":""}"
+        onclick="toggleItem('transducer',${i})">
+        <input type="checkbox"
+          ${selected.transducer.includes(i)?"checked":""}>
+        <strong>${p.name}</strong>
+        <span class="price">฿ ${p.price.toLocaleString()}</span>
+
+        ${selected.transducer.includes(i)?`
+          <div onclick="event.stopPropagation()"
+            style="display:flex;align-items:center;gap:12px;margin-top:12px">
+            <button type="button" class="secondary"
+              onclick="changeItemQuantity('transducer',${i},-1)">−</button>
+            <strong>จำนวน: ${selected.quantities.transducer[i] || 1}</strong>
+            <button type="button" class="secondary"
+              onclick="changeItemQuantity('transducer',${i},1)">+</button>
+          </div>
+        `:""}
+      </div>`).join("")}</div>`;
+}
+
+if(currentStep===3) {
+  html+=`<p>เลือกฟังก์ชันเสริมที่ต้องการ (เลือกได้หลายรายการ)</p>
+    <div class="grid">${products.options.map((p,i)=>`
+      <div class="product ${selected.options.includes(i)?"selected":""}"
+        onclick="toggleItem('options',${i})">
+        <input type="checkbox"
+          ${selected.options.includes(i)?"checked":""}>
+        <strong>${p.name}</strong>
+        <span class="price">${p.price===0?"฿ 0":"฿ "+p.price.toLocaleString()}</span>
+
+        ${selected.options.includes(i)?`
+          <div onclick="event.stopPropagation()"
+            style="display:flex;align-items:center;gap:12px;margin-top:12px">
+            <button type="button" class="secondary"
+              onclick="changeItemQuantity('options',${i},-1)">−</button>
+            <strong>จำนวน: ${selected.quantities.options[i] || 1}</strong>
+            <button type="button" class="secondary"
+              onclick="changeItemQuantity('options',${i},1)">+</button>
+          </div>
+        `:""}
+      </div>`).join("")}</div>`;
+}
+
+  if(currentStep===4) {
+  html+=`<p>เลือกอุปกรณ์เสริม</p>
+    <div class="grid">${products.accessory.map((p,i)=>`
+      <div class="product ${selected.accessory.includes(i)?"selected":""}"
+        onclick="toggleItem('accessory',${i})">
+
+        <input type="checkbox"
+          ${selected.accessory.includes(i)?"checked":""}>
+
+        <strong>${p.name}</strong>
+        <span class="price">฿ ${p.price.toLocaleString()}</span>
+
+        ${selected.accessory.includes(i)?`
+          <div onclick="event.stopPropagation()"
+            style="display:flex;align-items:center;gap:12px;margin-top:12px">
+
+            <button type="button" class="secondary"
+              onclick="changeItemQuantity('accessory',${i},-1)">−</button>
+
+            <strong>จำนวน: ${selected.quantities.accessory[i] || 1}</strong>
+
+            <button type="button" class="secondary"
+              onclick="changeItemQuantity('accessory',${i},1)">+</button>
+
+          </div>
+        `:""}
+
+      </div>`).join("")}</div>`;
+}
+
+  if(currentStep===5) {
+  html+=`
+    <label>รูปแบบการชำระเงิน</label>
+    <select id="condition" onchange="selected.condition=this.value">
+      <option value="">-- เลือกรูปแบบการชำระเงิน --</option>
+      ${[
+        "Cash",
+        "ผ่อนชำระ 3 งวด",
+        "ผ่อนชำระ 6 งวด",
+        "ผ่อนชำระ 12 งวด"
+      ].map(c=>
+   `<option value="${c}" ${selected.condition===c?"selected":""}>${c}</option>`
+).join("")}
+    </select>
+
+    <label>รายละเอียดเพิ่มเติม</label>
+    <textarea rows="5" placeholder="รายละเอียดการติดตั้ง การอบรม การรับประกัน ฯลฯ"
+      oninput="selected.notes=this.value">${escapeHTML(selected.notes)}</textarea>
+
+    <label>ส่วนลด (%)</label>
+    <input type="number" min="0" max="100" value="${selected.discount}"
+      oninput="selected.discount=Math.min(100,Math.max(0,Number(this.value)||0))">
+  `;
+}
+
+  if(currentStep===6) {
+    const items=getSelectedItems();
+    const subtotal=items.reduce((s,p)=>s+p.price,0);
+
+const installmentFee =
+  selected.condition === "ผ่อนชำระ 6 งวด" ? 5000 :
+  selected.condition === "ผ่อนชำระ 12 งวด" ? 10000 : 0;
+
+const discount=subtotal*selected.discount/100;
+const total=subtotal-discount+installmentFee;
+    html+=`
+      <p>ตรวจสอบรายการก่อนส่งคำขอราคา</p>
+      <div style="margin:15px 0;padding:15px;background:#f8fafc;border-radius:10px;">
+  <h3>Customer / Organization Information</h3>
+
+  <p><b>Hospital / Organization / Clinic:</b> ${escapeHTML(selected.hospital || "-")}</p>
+  <p><b>Department:</b> ${escapeHTML(selected.department || "-")}</p>
+  <p><b>Contact Person:</b> ${escapeHTML(selected.contactPerson || "-")}</p>
+  <p><b>Position:</b> ${escapeHTML(selected.position || "-")}</p>
+  <p><b>Telephone Number:</b> ${escapeHTML(selected.telephone || "-")}</p>
+  <p><b>Email Address:</b> ${escapeHTML(selected.email || "-")}</p>
+  <p><b>Address:</b> ${escapeHTML(selected.address || "-")}</p>
+  <p><b>Budget:</b> ${escapeHTML(selected.budget || "-")}</p>
+</div>
+
+<p><b>Condition:</b> ${escapeHTML(selected.condition || "-")}</p>
+      <div style="overflow-x:auto"><table>
+        <thead>
+  <tr>
+    <th>รายการ</th>
+    <th>จำนวน</th>
+    <th>ราคาต่อหน่วย</th>
+    <th>รวม</th>
+  </tr>
+</thead>
+        <tbody>${items.map(p=>`
+  <tr>
+    <td>${p.name}</td>
+    <td style="text-align:center">${p.category === "main" ? "" : (p.quantity || 1)}</td>
+    <td style="text-align:right">
+      ${p.category === "main" ? "" : "฿ " + Number(p.unitPrice ?? p.price).toLocaleString("th-TH")}
+    </td>
+    <td style="text-align:right">
+      ${p.category === "main" ? "" : "฿ " + Number(p.price).toLocaleString("th-TH")}
+    </td>
+  </tr>
+`).join("")}</tbody>
+      </table></div>
+      <p>ยอดรวม: ฿ ${subtotal.toLocaleString()}</p>
+      <p>ยอดรวม: ฿ ${subtotal.toLocaleString()}</p>
+<p>ส่วนลด (${selected.discount}%): ฿ ${discount.toLocaleString()}</p>
+<p>ค่าผ่อนชำระ: ฿ ${installmentFee.toLocaleString()}</p>
+<div class="total">ยอดสุทธิ: ฿ ${total.toLocaleString("th-TH",{maximumFractionDigits:2})}</div>ยอดสุทธิ: ฿ ${total.toLocaleString("th-TH",{maximumFractionDigits:2})}</div>
+      <p>${escapeHTML(selected.notes)}</p>
+      <p style="font-size:12px;color:#64748b">
+        * ราคาตัวอย่างสำหรับต้นแบบ ยังไม่ใช่ใบเสนอราคาอย่างเป็นทางการ
+      </p>
+    `;
+  }
+
+  content.innerHTML=html;
+  // แสดงปุ่ม Save Draft เฉพาะหน้า Summary
+document.getElementById("draftBtn").classList.toggle(
+  "hidden",
+  currentStep !== 6
+);
+
+// เปลี่ยนข้อความปุ่มตามขั้นตอน
+document.getElementById("nextBtn").textContent =
+  currentStep === 6
+    ? "Submit ✓"
+    : "ถัดไป →";
+}
+
+function escapeHTML(value) {
+  return String(value??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",
+    '"':"&quot;","'":"&#39;"
+  })[c]);
+}
+
+function selectMain(i) {
+  selected.main=i;
+  renderStep();
+}
+
+function toggleItem(group,i) {
+  const arr = selected[group];
+
+  if (arr.includes(i)) {
+    selected[group] = arr.filter(x => x !== i);
+    delete selected.quantities[group][i];
+  } else {
+    selected[group] = [...arr,i];
+    selected.quantities[group][i] = 1;
+  }
+
+  renderStep();
+}
+function changeItemQuantity(group,i,change) {
+  const current = selected.quantities[group][i] || 1;
+
+  selected.quantities[group][i] = Math.max(1,current + change);
+
+  renderStep();
+}
+function getSelectedItems() {
+  const items = [];
+
+  if (selected.main !== null) {
+    items.push({
+      ...products.main[selected.main],
+      category: "main",
+      quantity: 1,
+      unitPrice: 0,
+      price: 0
+    });
+  }
+
+  ["transducer", "options", "accessory"].forEach(group => {
+    selected[group].forEach(i => {
+      const product = products[group][i];
+      const quantity = selected.quantities[group][i] || 1;
+
+      items.push({
+        ...product,
+        category: group,
+        quantity: quantity,
+        unitPrice: product.price,
+        price: product.price * quantity
+      });
+    });
+  });
+
+  return items;
+}
+
+function nextStep() {
+
+  // ตรวจสอบ Information
+  if(currentStep===0 && !selected.hospital.trim()) {
+    alert("กรุณากรอกชื่อโรงพยาบาล / หน่วยงาน / คลินิก");
+    return;
+  }
+
+  // ตรวจสอบ Main Unit
+  if(currentStep===1 && selected.main===null) {
+    alert("กรุณาเลือก Main Unit");
+    return;
+  }
+
+  // ตรวจสอบรูปแบบการชำระเงิน
+  if(currentStep===5 && !selected.condition) {
+    alert("กรุณาเลือกรูปแบบการชำระเงิน");
+    return;
+  }
+
+  // ไปขั้นตอนถัดไป
+  if(currentStep<6) {
+    currentStep++;
+    renderStep();
+  } else {
+    saveQuotation();
+  }
+}
+function previousStep() {
+  if(currentStep>0) {
+    currentStep--;
+    renderStep();
+  } else {
+    showPage("home");
+  }
+}
+
+
+function saveQuotation(status = "รออนุมัติ") {
+  const items = getSelectedItems();
+
+  const subtotal = items.reduce((s, p) => s + p.price, 0);
+  const discount = subtotal * selected.discount / 100;
+  const total = subtotal - discount;
+
+  // สร้างรายการใบขอราคา
+  const quotation = {
+    id: "SPCS-" + Date.now().toString().slice(-7),
+    // Information
+hospital: selected.hospital,
+department: selected.department,
+contactPerson: selected.contactPerson,
+position: selected.position,
+telephone: selected.telephone,
+email: selected.email,
+address: selected.address,
+budget: selected.budget,
+    date: new Date().toLocaleDateString("th-TH"),
+    total: total,
+    status: status,
+    items: items,
+   selection: {
+  main: selected.main,
+  transducer: [...selected.transducer],
+  options: [...selected.options],
+  accessory: [...selected.accessory],
+  quantities: JSON.parse(JSON.stringify(selected.quantities))
+},
+    condition: selected.condition,
+    notes: selected.notes,
+    discount: selected.discount,
+  };
+
+  // บันทึกลงรายการ
+  if (editingDraftId) {
+  const index = history.findIndex(r => r.id === editingDraftId);
+
+  if (index !== -1) {
+    quotation.id = editingDraftId;
+    history[index] = quotation;
+  } else {
+    history.unshift(quotation);
+  }
+
+  editingDraftId = null;
+} else {
+  history.unshift(quotation);
+}
+
+localStorage.setItem("quotations", JSON.stringify(history));
+  // แจ้งผลตามประเภทการบันทึก
+  if (status === "Draft") {
+    alert("บันทึกฉบับร่างเรียบร้อยแล้ว");
+  } else {
+    alert("ส่งคำขอราคาเรียบร้อยแล้ว");
+  }
+
+  // ไปยังหน้ารายการใบเสนอราคา
+  showPage("history");
+}
+function editDraft(index) {
+  const quotation = history[index];
+
+  if (!quotation || quotation.status !== "Draft") {
+    alert("ไม่พบรายการฉบับร่าง");
+    return;
+  }
+
+  editingDraftId = quotation.id;
+
+  selected = {
+    main: quotation.selection.main,
+    transducer: [...quotation.selection.transducer],
+    options: [...quotation.selection.options],
+    accessory: [...quotation.selection.accessory],
+
+    quantities: quotation.selection.quantities || {
+      transducer: {},
+      options: {},
+      accessory: {}
+    },
+
+    // Information
+    hospital: quotation.hospital || "",
+    department: quotation.department || "",
+    contactPerson: quotation.contactPerson || "",
+    position: quotation.position || "",
+    telephone: quotation.telephone || "",
+    email: quotation.email || "",
+    address: quotation.address || "",
+    budget: quotation.budget || "",
+
+    // Special Conditions
+    condition: quotation.condition || "",
+    notes: quotation.notes || "",
+    discount: quotation.discount || 0,
+    vat: 7
+  };
+
+  currentStep = 0;
+  showPage("wizard");
+  renderStep();
+}
+async function downloadQuotationPDF(index) {
+  const quotation = history[index];
+
+  if (!quotation) {
+    alert("ไม่พบข้อมูลใบเสนอราคา");
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p", "mm", "a4");
+  // โหลดโลโก้ CMC BIOTECH
+const logo = new Image();
+
+const logoLoaded = new Promise((resolve) => {
+  logo.onload = () => resolve(true);
+  logo.onerror = () => resolve(false);
+});
+
+logo.src = "images/cmc-logo.jpeg";
+
+const isLogoLoaded = await logoLoaded;
+
+  // ===== COMPANY HEADER =====
+  doc.setFillColor(30, 64, 110);
+  doc.rect(0, 0, 210, 32, "F");
+  // แสดงโลโก้ใน PDF
+if (isLogoLoaded) {
+  doc.addImage(logo, "JPEG", 12, 5, 24, 24);
+}
+
+  doc.setTextColor(255, 255, 255);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(18);
+  doc.text("CMC BIOTECH", 42, 14);
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  doc.text("CMC BIOTECH CO., LTD.", 42, 21);
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(16);
+  doc.text("ULTRASOUND APPROVE PRICE", 195, 18, {
+    align: "right"
+  });
+
+  // ===== DOCUMENT INFORMATION =====
+  doc.setTextColor(40, 40, 40);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+
+  doc.text("Price Approval No.:", 15, 45);
+  doc.text("Prepared by:", 125, 45);
+
+  doc.setFont("helvetica", "normal");
+  doc.text(String(quotation.id || "-"), 55, 45);
+  doc.text(
+    document.getElementById("userLabel").textContent || "-",
+    155, 45
+  );
+
+  doc.setFont("helvetica", "bold");
+  doc.text("Date:", 15, 53);
+
+  doc.setFont("helvetica", "normal");
+  doc.text(String(quotation.date || "-"), 55, 53);
+
+  // ===== CUSTOMER INFORMATION =====
+  doc.setDrawColor(210, 215, 225);
+  doc.line(15, 64, 195, 64);
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+  doc.setTextColor(30, 64, 110);
+  doc.text("CUSTOMER INFORMATION", 15, 72);
+
+  doc.setFontSize(9);
+  doc.setTextColor(40, 40, 40);
+
+  // Row 1
+  doc.setFont("helvetica", "bold");
+  doc.text("Hospital:", 15, 82);
+  doc.text("Department:", 110, 82);
+
+  doc.setFont("helvetica", "normal");
+  doc.text(String(quotation.hospital || "-"), 43, 82);
+  doc.text(String(quotation.department || "-"), 143, 82);
+
+  // Row 2
+  doc.setFont("helvetica", "bold");
+  doc.text("Contact Person:", 15, 91);
+  doc.text("Position:", 110, 91);
+
+  doc.setFont("helvetica", "normal");
+  doc.text(String(quotation.contactPerson || "-"), 48, 91);
+  doc.text(String(quotation.position || "-"), 143, 91);
+
+  // Row 3
+  doc.setFont("helvetica", "bold");
+  doc.text("Telephone:", 15, 100);
+  doc.text("Email:", 110, 100);
+
+  doc.setFont("helvetica", "normal");
+  doc.text(String(quotation.telephone || "-"), 43, 100);
+  doc.text(String(quotation.email || "-"), 143, 100);
+
+  // Row 4
+  doc.setFont("helvetica", "bold");
+  doc.text("Budget:", 15, 109);
+
+  doc.setFont("helvetica", "normal");
+  doc.text(String(quotation.budget || "-"), 43, 109);
+
+  // Address
+  doc.setFont("helvetica", "bold");
+  doc.text("Address:", 15, 118);
+
+  doc.setFont("helvetica", "normal");
+  const addressLines = doc.splitTextToSize(
+    String(quotation.address || "-"),
+    155
+  );
+  doc.text(addressLines, 43, 118);
+
+  const productStartY = Math.max(
+    132,
+    118 + addressLines.length * 5 + 9
+  );
+  // ===== PRODUCT TABLE =====
+  doc.autoTable({
+    startY: productStartY,
+    margin: { left: 15, right: 15 },
+    head: [[
+      "No.",
+      "Product / Description",
+      "Quantity",
+      "Unit Price (THB)",
+      "Total (THB)"
+    ]],
+body: quotation.items.map((item, i) => [
+  item.category === "main" ? "" : quotation.items.filter((p, index) => index < i && p.category !== "main").length + 1,
+  item.name,
+  item.category === "main" ? "" : (item.quantity || 1),
+  item.category === "main" ? "" : Number(item.unitPrice ?? item.price).toLocaleString("en-US"),
+  item.category === "main" ? "" : Number(item.price).toLocaleString("en-US")
+]),
+    theme: "grid",
+    styles: {
+      font: "helvetica",
+      fontSize: 7,
+      cellPadding: 1.5,
+      textColor: [50, 50, 50],
+      lineColor: [210, 215, 225],
+      lineWidth: 0.2
+    },
+    headStyles: {
+      fillColor: [30, 64, 110],
+      textColor: [255, 255, 255],
+      fontStyle: "bold",
+      halign: "center"
+    },
+    columnStyles: {
+      0: { halign: "center", cellWidth: 12 },
+      1: { cellWidth: 76 },
+      2: { halign: "center", cellWidth: 20 },
+      3: { halign: "right", cellWidth: 38 },
+      4: { halign: "right", cellWidth: 38 }
+    }
+  });
+
+  // ===== PRICE SUMMARY =====
+  let finalY = doc.lastAutoTable.finalY + 12;
+
+  const subtotal = quotation.items.reduce(
+    (sum, item) => sum + Number(item.price || 0), 0
+  );
+
+  const discount = subtotal *
+  (Number(quotation.discount) || 0) / 100;
+
+const installmentFee =
+  quotation.condition === "ผ่อนชำระ 6 งวด" ? 5000 :
+  quotation.condition === "ผ่อนชำระ 12 งวด" ? 10000 : 0;
+
+const total = subtotal - discount + installmentFee;
+
+// ตรวจสอบพื้นที่ก่อนแสดงสรุปราคา
+if (finalY + 43 > 250) {
+  doc.addPage();
+  finalY = 20;
+}
+
+doc.setFont("helvetica", "normal");
+doc.setFontSize(10);
+doc.setTextColor(50, 50, 50);
+
+doc.text(
+  "Subtotal: " + subtotal.toLocaleString("en-US") + " THB",
+  195, finalY,
+  { align: "right" }
+);
+
+doc.text(
+  "Discount: " + discount.toLocaleString("en-US") + " THB",
+  195, finalY + 8,
+  { align: "right" }
+);
+
+doc.text(
+  "Installment Fee: " + installmentFee.toLocaleString("en-US") + " THB",
+  195, finalY + 16,
+  { align: "right" }
+);
+
+doc.setDrawColor(30, 64, 110);
+doc.line(125, finalY + 20, 195, finalY + 20);
+
+doc.setFont("helvetica", "bold");
+doc.setFontSize(13);
+doc.setTextColor(30, 64, 110);
+
+doc.text(
+  "Grand Total: " + total.toLocaleString("en-US") + " THB",
+  195, finalY + 29,
+  { align: "right" }
+);
+
+  // ===== SIGNATURE SECTION =====
+  let signY = finalY + 20;
+
+  if (signY + 35 > 280) {
+    doc.addPage();
+    signY = 35;
+  }
+
+  doc.setTextColor(40, 40, 40);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+
+  const signaturePositions = [65, 145];
+
+const signatureLabels = [
+  "Prepared by",
+  "Approved by"
+];
+
+  signaturePositions.forEach((x, i) => {
+    doc.setDrawColor(100, 100, 100);
+    doc.setLineWidth(0.3);
+
+    // Signature line
+    doc.line(x - 22, signY + 25, x + 22, signY + 25);
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(9);
+    doc.text(signatureLabels[i], x, signY + 31, {
+      align: "center"
+    });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.text("Date: ______________", x, signY + 38, {
+      align: "center"
+    });
+  });
+
+  // ===== FOOTER =====
+  doc.setDrawColor(210, 215, 225);
+  doc.line(15, 285, 195, 285);
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor(120, 120, 120);
+  doc.text("CMC BIOTECH | Ultrasound Approve Price", 105, 291, {
+    align: "center"
+  });
+
+  // ===== SAVE PDF =====
+  doc.save("Price_Approval_" + quotation.id + ".pdf");
+}
+function deleteDraft(index) {
+  const quotation = history[index];
+
+  if (!quotation || quotation.status !== "Draft") {
+    alert("สามารถลบได้เฉพาะ Draft เท่านั้น");
+    return;
+  }
+
+  if (!confirm("ต้องการลบ Draft รายการนี้ใช่หรือไม่?")) {
+    return;
+  }
+
+  history.splice(index, 1);
+  localStorage.setItem("quotations", JSON.stringify(history));
+
+  renderHistory();
+  alert("ลบ Draft เรียบร้อยแล้ว");
+}
+function renderHistory() {
+  const el = document.getElementById("historyList");
+  const searchInput = document.getElementById("historySearch");
+  const filterInput = document.getElementById("historyFilter");
+
+  const keyword = searchInput ? searchInput.value.toLowerCase().trim() : "";
+  const statusFilter = filterInput ? filterInput.value : "";
+
+  const filteredHistory = history.filter(r => {
+    const matchSearch =
+      r.id.toLowerCase().includes(keyword) ||
+      (r.hospital || "").toLowerCase().includes(keyword);
+
+    const matchStatus =
+      !statusFilter || r.status === statusFilter;
+
+    return matchSearch && matchStatus;
+  });
+
+  if (filteredHistory.length === 0) {
+    el.innerHTML = "<p>ไม่พบรายการใบเสนอราคา</p>";
+    return;
+  }
+
+  el.innerHTML = `
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>เลขที่</th>
+            <th>โรงพยาบาล</th>
+            <th>วันที่</th>
+            <th>ยอดรวม</th>
+            <th>สถานะ</th>
+            <th>การอนุมัติ</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${filteredHistory.map(r => {
+            const index = history.indexOf(r);
+
+            return `
+              <tr>
+                <td>${r.id}</td>
+                <td>${escapeHTML(r.hospital)}</td>
+                <td>${r.date}</td>
+                <td>฿ ${r.total.toLocaleString("th-TH")}</td>
+                <td>${r.status}</td>
+                <td>
+ <button type="button" class="primary"
+    onclick="downloadQuotationPDF(${index})">
+    PDF
+  </button>
+${
+  r.status === "Draft"
+  ? `
+    <button class="primary"
+      onclick="editDraft(${index})">
+      แก้ไข Draft
+    </button>
+    <button class="secondary"
+  onclick="deleteDraft(${index})">
+  ลบ Draft
+</button>
+  `
+  : ""
+}
+  ${
+    r.status === "รออนุมัติ"
+    ? `
+      <button class="primary"
+        onclick="approveQuotation(${index})">
+        อนุมัติ
+      </button>
+
+      <button class="secondary"
+        onclick="rejectQuotation(${index})">
+        ไม่อนุมัติ
+      </button>
+    `
+    : ""
+  }
+</td>
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function updateDashboard() {
+  document.getElementById("countAll").textContent = history.length;
+
+  document.getElementById("countPending").textContent =
+    history.filter(r => r.status === "รออนุมัติ").length;
+
+  document.getElementById("countDone").textContent =
+    history.filter(r => r.status === "อนุมัติแล้ว").length;
+    document.getElementById("countRejected").textContent =
+  history.filter(r => r.status === "ไม่อนุมัติ").length;
+
+  document.getElementById("recentList").innerHTML = history.length
+    ? history.slice(0, 5).map(r => `
+      <p>${r.id} | ${escapeHTML(r.hospital)} | ฿ ${r.total.toLocaleString()}</p>
+    `).join("")
+    : "ยังไม่มีรายการ";
+}
+function showCustomerForm() {
+  editingCustomerIndex = -1;
+
+  document.getElementById("customerFormTitle").textContent = "เพิ่มข้อมูลลูกค้า";
+  document.getElementById("customerName").value = "";
+  document.getElementById("customerContact").value = "";
+  document.getElementById("customerDepartment").value = "";
+  document.getElementById("customerPhone").value = "";
+  document.getElementById("customerEmail").value = "";
+
+  document.getElementById("customerForm").classList.remove("hidden");
+}
+
+function hideCustomerForm() {
+  document.getElementById("customerForm").classList.add("hidden");
+  editingCustomerIndex = -1;
+}
+function saveCustomer() {
+  const customer = {
+    name: document.getElementById("customerName").value.trim(),
+    contact: document.getElementById("customerContact").value.trim(),
+    department: document.getElementById("customerDepartment").value.trim(),
+    phone: document.getElementById("customerPhone").value.trim(),
+    email: document.getElementById("customerEmail").value.trim()
+  };
+
+  if (!customer.name) {
+    alert("กรุณากรอกชื่อโรงพยาบาล / คลินิก");
+    return;
+  }
+
+  if (editingCustomerIndex === -1) {
+    customers.push(customer);
+  } else {
+    customers[editingCustomerIndex] = customer;
+  }
+
+  localStorage.setItem("customers", JSON.stringify(customers));
+
+  hideCustomerForm();
+
+  document.getElementById("customerName").value = "";
+  document.getElementById("customerContact").value = "";
+  document.getElementById("customerDepartment").value = "";
+  document.getElementById("customerPhone").value = "";
+  document.getElementById("customerEmail").value = "";
+
+  renderCustomerList();
+
+  alert("บันทึกข้อมูลลูกค้าเรียบร้อยแล้ว");
+}
+function editProduct(category, index) {
+  const item = products[category][index];
+
+  editingProductIndex = index;
+  editingProductCategory = category;
+
+  document.getElementById("productFormTitle").textContent = "แก้ไขสินค้า";
+  document.getElementById("productCategory").value = category;
+  document.getElementById("productName").value = item.name;
+  document.getElementById("productModel").value = item.model || "";
+  document.getElementById("productPrice").value = item.price || 0;
+
+  document.getElementById("productForm").classList.remove("hidden");
+}
+function deleteProduct(category, index) {
+  const item = products[category][index];
+
+  const confirmDelete = confirm(
+    "ต้องการลบสินค้า " + item.name + " ใช่หรือไม่?"
+  );
+
+  if (!confirmDelete) {
+    return;
+  }
+
+  products[category].splice(index, 1);
+  saveProducts ();
+  alert("ลบสินค้าเรียบร้อยแล้ว");
+
+  renderProductList();
+}
+
+
+  
+
+function renderCustomerList() {
+  const el = document.getElementById("customerList");
+  if (!el) return;
+
+  const keyword = document.getElementById("customerSearch").value.toLowerCase();
+
+  const filtered = customers.filter(c =>
+    [c.name, c.contact, c.department, c.phone, c.email]
+      .some(value => (value || "").toLowerCase().includes(keyword))
+  );
+
+  if (filtered.length === 0) {
+    el.innerHTML = "<p>ไม่พบข้อมูลลูกค้า</p>";
+    return;
+  }
+
+  el.innerHTML = `
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>โรงพยาบาล / คลินิก</th>
+            <th>ผู้ติดต่อ</th>
+            <th>แผนก</th>
+            <th>เบอร์โทร</th>
+            <th>อีเมล</th>
+            <th>จัดการ</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${filtered.map(c => {
+            const index = customers.indexOf(c);
+            return `
+              <tr>
+                <td>${escapeHTML(c.name)}</td>
+                <td>${escapeHTML(c.contact)}</td>
+                <td>${escapeHTML(c.department)}</td>
+                <td>${escapeHTML(c.phone)}</td>
+                <td>${escapeHTML(c.email)}</td>
+                <td>
+                  <button onclick="editCustomer(${index})">แก้ไข</button>
+                  <button onclick="deleteCustomer(${index})">ลบ</button>
+                </td>
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function editCustomer(index) {
+  const c = customers[index];
+  if (!c) return;
+
+  editingCustomerIndex = index;
+
+  document.getElementById("customerFormTitle").textContent = "แก้ไขข้อมูลลูกค้า";
+  document.getElementById("customerName").value = c.name;
+  document.getElementById("customerContact").value = c.contact;
+  document.getElementById("customerDepartment").value = c.department;
+  document.getElementById("customerPhone").value = c.phone;
+  document.getElementById("customerEmail").value = c.email;
+
+  document.getElementById("customerForm").classList.remove("hidden");
+}
+
+function deleteCustomer(index) {
+  if (!confirm("ต้องการลบข้อมูลลูกค้ารายนี้หรือไม่?")) return;
+
+  customers.splice(index, 1);
+  localStorage.setItem("customers", JSON.stringify(customers));
+
+  renderCustomerList();
+  alert("ลบข้อมูลลูกค้าเรียบร้อยแล้ว");
+}
+function approveQuotation(index) {
+  if (!confirm("ยืนยันการอนุมัติใบเสนอราคานี้หรือไม่?")) return;
+
+  history[index].status = "อนุมัติแล้ว";
+localStorage.setItem("quotations", JSON.stringify(history));
+  alert("อนุมัติใบเสนอราคาเรียบร้อยแล้ว");
+
+  renderHistory();
+  updateDashboard();
+}
+function rejectQuotation(index) {
+  if (!confirm("ยืนยันการไม่อนุมัติใบเสนอราคานี้หรือไม่?")) return;
+
+  history[index].status = "ไม่อนุมัติ";
+
+  localStorage.setItem("quotations", JSON.stringify(history));
+
+  alert("บันทึกสถานะไม่อนุมัติเรียบร้อยแล้ว");
+
+  renderHistory();
+  updateDashboard();
+}
+sessionStorage.removeItem("medEquipLoggedIn");
+sessionStorage.removeItem("medEquipUsername");
+let salespeople = JSON.parse(
+  localStorage.getItem("salespeople") || "[]"
+);
+
+function showManagementTab(tab) {
+  if (tab !== "sales") {
+    alert("ส่วนนี้กำลังพัฒนาอยู่ครับ");
+    return;
+  }
+
+  const content = document.getElementById("managementContent");
+
+  content.classList.remove("hidden");
+  content.style.display = "block";
+
+  document.getElementById("managementTitle").textContent =
+    "จัดการผู้ใช้งาน";
+
+  renderUserList();
+}
+
+function saveSalesperson() {
+  const name = document.getElementById("salesName").value.trim();
+  const email = document.getElementById("salesEmail").value.trim();
+
+  if (!name) {
+    alert("กรุณากรอกชื่อพนักงานขาย");
+    return;
+  }
+
+  salespeople.push({ name, email });
+
+  localStorage.setItem("salespeople", JSON.stringify(salespeople));
+
+  document.getElementById("salesName").value = "";
+  document.getElementById("salesEmail").value = "";
+
+  renderSalesList();
+
+  alert("บันทึกข้อมูลพนักงานขายเรียบร้อย");
+}
+
+function renderSalesList() {
+  const list = document.getElementById("salesList");
+
+  if (salespeople.length === 0) {
+    list.textContent = "ยังไม่มีข้อมูลพนักงานขาย";
+    return;
+  }
+
+  list.innerHTML = salespeople.map((person, index) => `
+    <div style="padding:12px; margin-bottom:10px; background:white; border-radius:8px;">
+      <strong>${person.name}</strong>
+      <p>${person.email || "-"}</p>
+    </div>
+  `).join("");
+}
+</script>
+</body>
+</html>
