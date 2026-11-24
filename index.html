@@ -694,7 +694,9 @@ function saveProducts() {
 }
 async function loadProducts() {
   try {
-    const response = await fetch("./products-final.json");
+    const response = await fetch("./products-final.json", {
+      cache: "no-store"
+    });
 
     if (!response.ok) {
       throw new Error("ไม่สามารถโหลดข้อมูลราคาได้");

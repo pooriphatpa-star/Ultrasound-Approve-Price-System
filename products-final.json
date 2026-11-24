@@ -1,1 +1,165 @@
-{"main":[{"name":"Clarius","price":0,"image":"clarius.png"},{"name":"Konica Minolta","price":0,"image":"konica.png"},{"name":"Wisonic","price":0,"image":"wisonic.png"},{"name":"Vinno","price":0,"image":"vinno.png"},{"name":"SonoScape","price":0,"image":"sonoscape.png"},{"name":"Canon","model":"","price":0,"image":"canon.png"}],"transducer":[{"name":"(STD) C3 HD3 Convex","model":"","price":320000,"image":""},{"name":"(STD) L7 HD3 Linear","model":"","price":320000,"image":""},{"name":"(STD) L15 HD3 Linear","model":"","price":320000,"image":""},{"name":"(SALES) C3 HD3 Convex","model":"","price":270000,"image":""},{"name":"(SALES) L7 HD3 Linear","model":"","price":270000,"image":""},{"name":"(SALES) L15 HD3 Linear","model":"","price":270000,"image":""},{"name":"(SPECIAL) C3 HD3 Convex","model":"","price":200000,"image":""},{"name":"(SPECIAL) L7 HD3 Linear","model":"","price":200000,"image":""},{"name":"(SPECIAL) L15 HD3 Linear","model":"","price":200000,"image":""},{"name":"(STD) L20 HD3 Linear","model":"","price":350000,"image":""},{"name":"(STD) EC7 HD3 Endocavity","model":"","price":350000,"image":""},{"name":"(STD) PA HD3 Phased Array","model":"","price":350000,"image":""},{"name":"(STD) PAL HD3 Phased+Linear","model":"","price":350000,"image":""},{"name":"(SALES) L20 HD3 Linear","model":"","price":270000,"image":""},{"name":"(SALES) EC7 HD3 Endocavity","model":"","price":270000,"image":""},{"name":"(SALES) PA HD3 Phased Array","model":"","price":270000,"image":""},{"name":"(SALES) PAL HD3 Phased+Linear","model":"","price":270000,"image":""}],"options":[{"name":"iPad","price":30000},{"name":"No iPad","price":0}],"accessory":[{"name":"Bag Clarius","price":0},{"name":"Power Fan","price":0},{"name":"Gel","model":"","price":0,"image":""}]}
+{
+  "main": [
+    {
+      "name": "Clarius",
+      "price": 0,
+      "image": "clarius.png"
+    },
+    {
+      "name": "Konica Minolta",
+      "price": 0,
+      "image": "konica.png"
+    },
+    {
+      "name": "Wisonic",
+      "price": 0,
+      "image": "wisonic.png"
+    },
+    {
+      "name": "Vinno",
+      "price": 0,
+      "image": "vinno.png"
+    },
+    {
+      "name": "SonoScape",
+      "price": 0,
+      "image": "sonoscape.png"
+    },
+    {
+      "name": "Canon",
+      "model": "",
+      "price": 0,
+      "image": "canon.png"
+    }
+  ],
+  "transducer": [
+    {
+      "name": "(GOV) C3 HD3 Convex",
+      "model": "",
+      "price": 320000,
+      "image": ""
+    },
+    {
+      "name": "(GOV) L7 HD3 Linear",
+      "model": "",
+      "price": 320000,
+      "image": ""
+    },
+    {
+      "name": "(GOV) L15 HD3 Linear",
+      "model": "",
+      "price": 320000,
+      "image": ""
+    },
+    {
+      "name": "(GOV) L20 HD3 Linear",
+      "model": "",
+      "price": 350000,
+      "image": ""
+    },
+    {
+      "name": "(GOV) EC7 HD3 Endocavity",
+      "model": "",
+      "price": 350000,
+      "image": ""
+    },
+    {
+      "name": "(GOV) PA HD3 Phased Array",
+      "model": "",
+      "price": 350000,
+      "image": ""
+    },
+    {
+      "name": "(GOV) PAL HD3 Phased+Linear",
+      "model": "",
+      "price": 350000,
+      "image": ""
+    },
+    {
+      "name": "(PRV) C3 HD3 Convex",
+      "model": "",
+      "price": 270000,
+      "image": ""
+    },
+    {
+      "name": "(PRV) L7 HD3 Linear",
+      "model": "",
+      "price": 270000,
+      "image": ""
+    },
+    {
+      "name": "(PRV) L15 HD3 Linear",
+      "model": "",
+      "price": 270000,
+      "image": ""
+    },
+    {
+      "name": "(PRV) L20 HD3 Linear",
+      "model": "",
+      "price": 300000,
+      "image": ""
+    },
+    {
+      "name": "(PRV) EC7 HD3 Endocavity",
+      "model": "",
+      "price": 300000,
+      "image": ""
+    },
+    {
+      "name": "(PRV) PA HD3 Phased Array",
+      "model": "",
+      "price": 300000,
+      "image": ""
+    },
+    {
+      "name": "(PRV) PAL HD3 Phased+Linear",
+      "model": "",
+      "price": 300000,
+      "image": ""
+    },
+    {
+      "name": "(SPECIAL) C3 HD3 Convex",
+      "model": "",
+      "price": 200000,
+      "image": ""
+    },
+    {
+      "name": "(SPECIAL) L7 HD3 Linear",
+      "model": "",
+      "price": 200000,
+      "image": ""
+    },
+    {
+      "name": "(SPECIAL) L15 HD3 Linear",
+      "model": "",
+      "price": 200000,
+      "image": ""
+    }
+  ],
+  "options": [
+    {
+      "name": "iPad",
+      "price": 30000
+    },
+    {
+      "name": "No iPad",
+      "price": 0
+    }
+  ],
+  "accessory": [
+    {
+      "name": "Bag Clarius",
+      "price": 0
+    },
+    {
+      "name": "Power Fan",
+      "price": 0
+    },
+    {
+      "name": "Gel",
+      "model": "",
+      "price": 0,
+      "image": ""
+    }
+  ]
+}
