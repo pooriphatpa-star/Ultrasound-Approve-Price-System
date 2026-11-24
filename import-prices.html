@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>นำเข้าข้อมูลราคา</title>
+</head>
+<body>
+  <h2>นำเข้าข้อมูลสินค้าและราคา</h2>
+  <p>เลือกไฟล์ products-backup.json ที่สำรองไว้</p>
+
+  <input type="file" id="backupFile" accept=".json">
+  <button id="importButton">นำเข้าข้อมูล</button>
+
+  <p id="status"></p>
+
+  <script>
+    document.getElementById("importButton").addEventListener("click", async function () {
+      const file = document.getElementById("backupFile").files[0];
+      const status = document.getElementById("status");
+
+      if (!file) {
+        status.textContent = "กรุณาเลือกไฟล์สำรองก่อน";
+        return;
+      }
+
+      try {
+        const data = JSON.parse(await file.text());
+        const categories = ["main", "transducer", "options", "accessory"];
+
+        if (!data || !categories.every(category => Array.isArray(data[category]))) {
+          throw new Error("รูปแบบข้อมูลไม่ถูกต้อง");
+        }
+
+        localStorage.setItem("medEquipProducts", JSON.stringify(data));
+        status.textContent = "นำเข้าข้อมูลสำเร็จแล้ว กรุณากลับไปเปิดเว็บไซต์หลัก";
+      } catch (error) {
+        status.textContent = "นำเข้าไม่สำเร็จ: " + error.message;
+      }
+    });
+  </script>
+</body>
+</html>
