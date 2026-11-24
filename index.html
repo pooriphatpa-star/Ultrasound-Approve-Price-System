@@ -692,19 +692,30 @@ function saveProducts() {
     JSON.stringify(products)
   );
 }
-function loadProducts() {
-  const savedProducts = localStorage.getItem("medEquipProducts");
+async function loadProducts() {
+  try {
+    const response = await fetch("./products-final.json");
 
-  if (savedProducts) {
-    const data = JSON.parse(savedProducts);
+    if (!response.ok) {
+      throw new Error("ไม่สามารถโหลดข้อมูลราคาได้");
+    }
+
+    const data = await response.json();
 
     ["main", "transducer", "options", "accessory"].forEach(category => {
       if (Array.isArray(data[category])) {
         products[category] = data[category];
       }
     });
+
+    renderProductList();
+
+  } catch (error) {
+    console.error("โหลดข้อมูลราคาไม่สำเร็จ:", error);
+    alert("ไม่สามารถโหลดข้อมูลราคาได้ กรุณาตรวจสอบไฟล์ products-final.json");
   }
 }
+
 loadProducts();
 function showProductForm() {
   editingProduct = null;
