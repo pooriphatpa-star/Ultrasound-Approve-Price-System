@@ -1017,35 +1017,7 @@ sessionStorage.setItem("medEquipUsername", name);
   document.getElementById("app").style.display = "block";
   showPage("home");
 }
-function saveProduct() {
-  const category = document.getElementById("productCategory").value;
-  const name = document.getElementById("productName").value.trim();
-  const model = document.getElementById("productModel").value.trim();
-  const price = Number(document.getElementById("productPrice").value) || 0;
 
-  if (!name) {
-    alert("กรุณากรอกชื่อยี่ห้อ / สินค้า");
-    return;
-  }
-
-  const newProduct = {
-  name: name,
-  model: model,
-  price: price,
-  image: category === "main" && name.toLowerCase() === "canon"
-    ? "canon.png"
-    : ""
-};
-
-  products[category].push(newProduct);
-
-saveProducts();
-
-alert("เพิ่มสินค้าเรียบร้อยแล้ว");
-
-  hideProductForm();
-  renderProductList();
-}
 function logout() {
   sessionStorage.removeItem("medEquipLoggedIn");
 sessionStorage.removeItem("medEquipUsername");
